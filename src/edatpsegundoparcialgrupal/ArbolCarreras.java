@@ -1,7 +1,6 @@
 package edatpsegundoparcialgrupal;
 
 import java.util.Scanner;
-
  
 public class ArbolCarreras {
     
@@ -10,7 +9,6 @@ public class ArbolCarreras {
     public ArbolCarreras() {
         this.raiz = null;
     }
-
 
     public void construirArbolDefault() {
         // Nivel 0 (raíz)
@@ -56,5 +54,32 @@ public class ArbolCarreras {
 
         System.out.println("\n>>> Basado en tus respuestas, te sugerimos: " 
                 + actual.texto);
+    }  
+    
+    public void construirArbolInteractivo() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n--- MODO ADMIN: Construcción de árbol nuevo ---");
+        this.raiz = crearNodo(sc, "la RAÍZ inicial del árbol", 0);
     }
+
+    private NodoDecision crearNodo(Scanner sc, String contexto, int nivel) {
+        System.out.println("\n Nivel " + nivel + " Ingrese la PREGUNTA (niveles 0,1,2) o CARRERA (nivel 3) para " + contexto + ":");
+        String texto = sc.nextLine();
+
+        NodoDecision nuevoNodo = new NodoDecision(texto);
+
+        System.out.println("El texto ingresado es una CARRERA? (si/no):");
+        String esCarrera = sc.nextLine().trim().toLowerCase();
+        
+        if (esCarrera.equals("no")) {
+            System.out.println("\n Definiendo rama Si para la pregunta: " + texto);
+            nuevoNodo.si = crearNodo(sc, "la respuesta Si a " + texto , nivel + 1);
+
+            System.out.println("\n Definiendo rama NO para la pregunta: " + texto);
+            nuevoNodo.no = crearNodo(sc, "la respuesta No a " + texto, nivel + 1);
+        }
+        return nuevoNodo;
+    }
+    
 }
+
